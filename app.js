@@ -72,7 +72,7 @@ app.get('/:tag', function(req, res) {
 	Bookmark.aggregate(query, function(err, taggedBookmarks) {
 		if (err) { res.send(err); }
 
-		res.json(taggedBookmarks);
+		res.render('index', { bookmarks: taggedBookmarks });
 	});
 });
 
