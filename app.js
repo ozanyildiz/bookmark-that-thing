@@ -7,6 +7,7 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 var app = express();
 
@@ -27,12 +28,14 @@ app.use(express.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
-var Bookmark = mongoose.model('Bookmark', {
+var bookmarkSchema = new Schema({
 	url: String,
-	tags: String,
-	notes: String
+	tags: [String],
+	notes: String,
+	created_at: { type: Date, default: Date.now }
 });
 
+var Bookmark = mongoose.model('Bookmark', bookmarkSchema);
 
 // development only
 if ('development' == app.get('env')) {
@@ -49,7 +52,7 @@ app.get('/', function(req, res) {
 app.post('/', function(req, res) {
 	Bookmark.create({
 		url: req.body.inputUrl,
-		tags: req.body.inputTags,
+		tags: req.body.inputTags.replace(/ /g,'').split(","),
 		notes: req.body.inputNotes
 	}, function(err, bookmark) {
 		if (err) { res.send(err); }
