@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title>Bookmark-That-Thing</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
   </head>
@@ -9,12 +9,12 @@
     <div class="navbar navbar-default" role="navigation">
       <div class="container">
         <div class="navbar-header">
-             <a class="navbar-brand" href="#"><%= title %></a>
+             <a class="navbar-brand" href="#">Bookmark-That-Thing</a>
         </div>
       </div>
     </div>
 
-
+  <div class="container">
     <form class="form-horizontal" role="form" action="/" method="POST">
       <div class="form-group">
         <label for="inputUrl" class="col-sm-2 control-label">URL</label>
@@ -40,5 +40,15 @@
         </div>
       </div>
     </form>
+    <div class="list-group">
+      <% for(var i = 0; i < bookmarks.length; i++) {%>
+        <div class="list-group-item">
+          <span class="pull-right">Yesterday</span>
+          <p class="list-group-item-heading"><%= bookmarks[i]['url'] %></p>
+          <p class="list-group-item-text"><%= bookmarks[i]['tags'] %></p>
+        </div>
+      <% } %>
+    </div>
+  </div>
   </body>
 </html>

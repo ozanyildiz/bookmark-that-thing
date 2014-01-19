@@ -40,7 +40,10 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', function(req, res) {
-	res.render('index', { title: 'Bookmark-That-Thing' });
+	Bookmark.find(function(err, bookmarks) {
+		if (err) { res.send(err); }
+		res.render('index', { bookmarks: bookmarks });
+	});
 });
 
 app.post('/', function(req, res) {
@@ -49,11 +52,13 @@ app.post('/', function(req, res) {
 		tags: req.body.inputTags,
 		notes: req.body.inputNotes
 	}, function(err, bookmark) {
-		if (err) {
-			res.send(err);
-		}
+		if (err) { res.send(err); }
 
-		res.json(bookmark);
+		Bookmark.find(function(err, bookmarks) {
+			if (err) { res.send(err); }
+
+			res.render('index', { bookmarks: bookmarks });
+		});
 	});
 });
 
