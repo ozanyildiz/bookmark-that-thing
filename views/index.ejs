@@ -44,8 +44,8 @@
       <% for(var i = 0; i < bookmarks.length; i++) {%>
         <div class="list-group-item">
           <span class="pull-right"><%= bookmarks[i]['created_at'] %></span>
-          <p class="list-group-item-heading"><%= bookmarks[i]['url'] %></p>
-          <p class="list-group-item-text"><%= bookmarks[i]['tags'] %></p>
+          <p class="list-group-item-heading"><a href="<%= bookmarks[i]['url'] %>"><%= bookmarks[i]['url'] %></a></p>
+          <p class="list-group-item-text">[<%= bookmarks[i]['tags'] %> - <%= bookmarks[i]['notes'] %>]</p>
         </div>
       <% } %>
     </div>
