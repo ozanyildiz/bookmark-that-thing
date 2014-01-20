@@ -46,8 +46,10 @@
           <span class="pull-right"><%= bookmarks[i]['created_at'] %></span>
           <p class="list-group-item-heading"><a href="<%= bookmarks[i]['url'] %>"><%= bookmarks[i]['url'] %></a></p>
           <p class="list-group-item-text">
-            <% for (var j = 0; j < bookmarks[i]['tags'].length; j++) {%>
-              <a href="<%= bookmarks[i]['tags'][j] %>"><%= bookmarks[i]['tags'][j] %></a><% if (j != bookmarks[i]['tags'].length - 1) {%>,<% } %>
+            <% if (bookmarks[i]['tags']) {%>
+              <% for (var j = 0; j < bookmarks[i]['tags'].length; j++) {%>
+                <a href="<%= bookmarks[i]['tags'][j] %>"><%= bookmarks[i]['tags'][j] %></a><% if (j != bookmarks[i]['tags'].length - 1) {%>,<% } %>
+              <% } %>
             <% } %>
             <% if (bookmarks[i]['notes']) {%>
               <%= bookmarks[i]['notes'] %>
