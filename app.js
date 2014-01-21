@@ -80,7 +80,7 @@ app.get('/:tag', function(req, res) {
 
 	Bookmark.aggregate(query, function(err, taggedBookmarks) {
 		if (err) { res.send(err); }
-
+		console.log("--------------------" + JSON.stringify(taggedBookmarks, null, 4));
 		res.render('index', { bookmarks: taggedBookmarks });
 	});
 });

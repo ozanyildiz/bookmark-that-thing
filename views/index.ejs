@@ -2,8 +2,8 @@
 <html>
   <head>
     <title>Bookmark-That-Thing</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel="stylesheet" href="http://bootswatch.com/flatly/bootstrap.min.css">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
     <div class="navbar navbar-default" role="navigation">
@@ -41,17 +41,21 @@
       </div>
     </form>
     <div class="list-group">
-      <% for (var i = 0; i < bookmarks.length; i++) {%>
+      <% for (var i = 0; i < bookmarks.length; i++) { %>
         <div class="list-group-item">
           <span class="pull-right"><%= bookmarks[i]['created_at'] %></span>
           <p class="list-group-item-heading"><a href="<%= bookmarks[i]['url'] %>"><%= bookmarks[i]['url'] %></a></p>
           <p class="list-group-item-text">
-            <% if (bookmarks[i]['tags']) {%>
-              <% for (var j = 0; j < bookmarks[i]['tags'].length; j++) {%>
-                <a href="<%= bookmarks[i]['tags'][j] %>"><%= bookmarks[i]['tags'][j] %></a><% if (j != bookmarks[i]['tags'].length - 1) {%>,<% } %>
+            <% if (bookmarks[i]['tags']) { %>
+              <% if (typeof bookmarks[i]['tags'] === 'string') {%>
+                <a href="<%= bookmarks[i]['tags'] %>"><%= bookmarks[i]['tags'] %></a>
+              <% } else { %>
+                <% for (var j = 0; j < bookmarks[i]['tags'].length; j++) { %>
+                  <a href="<%= bookmarks[i]['tags'][j] %>"><%= bookmarks[i]['tags'][j] %></a><% if (j != bookmarks[i]['tags'].length - 1) {%>,<% } %>
+                <% } %>
               <% } %>
             <% } %>
-            <% if (bookmarks[i]['notes']) {%>
+            <% if (bookmarks[i]['notes']) { %>
               <%= bookmarks[i]['notes'] %>
             <% } %>
           </p>
