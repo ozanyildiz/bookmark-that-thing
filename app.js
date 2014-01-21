@@ -1,8 +1,5 @@
 
-/**
- * Module dependencies.
- */
-
+// module dependencies
 var express = require('express');
 var http = require('http');
 var path = require('path');
@@ -29,62 +26,61 @@ app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
 var bookmarkSchema = new Schema({
-	url: String,
-	tags: [String],
-	notes: String,
-	created_at: { type: Date, default: Date.now }
+    url: String,
+    tags: [String],
+    notes: String,
+    created_at: { type: Date, default: Date.now }
 });
 
 var Bookmark = mongoose.model('Bookmark', bookmarkSchema);
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+    app.use(express.errorHandler());
 }
 
 app.get('/', function(req, res) {
-	Bookmark.find(function(err, bookmarks) {
-		if (err) { res.send(err); }
-		res.render('index', { bookmarks: bookmarks });
-	});
+    Bookmark.find(function(err, bookmarks) {
+        if (err) { res.send(err); }
+        res.render('index', { bookmarks: bookmarks });
+    });
 });
 
 app.post('/', function(req, res) {
-	var tags = req.body.inputTags.split(",");
-	
-	// Clean tag is the tag with no leading and ending spaces and also no more than one spaces!
-	var cleanTags = [];
-	var cleanTag = null;
-	for (var i = 0; i < tags.length; i++) {
-		cleanTag = tags[i].trim().replace(/ +/g, " ");
-		if (cleanTag != "") { cleanTags.push(cleanTag); }
-	}
-	Bookmark.create({
-		url: req.body.inputUrl,
-		tags: cleanTags,
-		notes: req.body.inputNotes
-	}, function(err, bookmark) {
-		if (err) { res.send(err); }
+    var tags = req.body.inputTags.split(",");
+    
+    // Clean tag is the tag with no leading and ending spaces and also no more than one spaces!
+    var cleanTags = [];
+    var cleanTag = null;
+    for (var i = 0; i < tags.length; i++) {
+        cleanTag = tags[i].trim().replace(/ +/g, " ");
+        if (cleanTag != "") { cleanTags.push(cleanTag); }
+    }
 
-		Bookmark.find(function(err, bookmarks) {
-			if (err) { res.send(err); }
+    Bookmark.create({
+        url: req.body.inputUrl,
+        tags: cleanTags,
+        notes: req.body.inputNotes
+    }, function(err, bookmark) {
+        if (err) { res.send(err); }
 
-			res.render('index', { bookmarks: bookmarks });
-		});
-	});
+        Bookmark.find(function(err, bookmarks) {
+            if (err) { res.send(err); }
+            res.render('index', { bookmarks: bookmarks });
+        });
+    });
 });
 
 app.get('/:tag', function(req, res) {
-	var tag = req.params.tag;
-	var query = [{$unwind: "$tags"}, {$match: { tags: tag }}];
+    var tag = req.params.tag;
+    var query = [{$unwind: "$tags"}, {$match: { tags: tag }}];
 
-	Bookmark.aggregate(query, function(err, taggedBookmarks) {
-		if (err) { res.send(err); }
-		console.log("--------------------" + JSON.stringify(taggedBookmarks, null, 4));
-		res.render('index', { bookmarks: taggedBookmarks });
-	});
+    Bookmark.aggregate(query, function(err, taggedBookmarks) {
+        if (err) { res.send(err); }
+        res.render('index', { bookmarks: taggedBookmarks });
+    });
 });
 
 http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+    console.log('Express server listening on port ' + app.get('port'));
 });
