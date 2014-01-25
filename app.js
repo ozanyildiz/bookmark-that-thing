@@ -59,7 +59,7 @@ app.get('/', function(req, res) {
     });
 });
 
-app.post('/', function(req, res) {
+app.post('/save', function(req, res) {
     var tags = req.body.inputTags.split(",");
     
     // Clean tag is the tag with no leading and ending spaces and also no more than one spaces!
@@ -77,10 +77,7 @@ app.post('/', function(req, res) {
     }, function(err, bookmark) {
         if (err) { res.send(err); }
 
-        Bookmark.find(function(err, bookmarks) {
-            if (err) { res.send(err); }
-            renderIndexPage(res, bookmarks, renderIndexPageWithTags);
-        });
+        res.redirect('/');
     });
 });
 
