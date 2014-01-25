@@ -25,12 +25,15 @@
         <div class="row row-offcanvas row-offcanvas-left">
           <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
             <ul class="nav">
-              <% for (var i = 0; i < tagsWithUrlNumbers.length; i++) { %>
-                <li><a href="/<%= tagsWithUrlNumbers[i]['_id'] %>"><%= tagsWithUrlNumbers[i]['_id'] %> (<%= tagsWithUrlNumbers[i]['numberOfUrls'] %>)</a></li>
+              <% if (tagsWithUrlNumbers) { %>
+                <% for (var i = 0; i < tagsWithUrlNumbers.length; i++) { %>
+                  <li><a href="/<%= tagsWithUrlNumbers[i]['_id'] %>"><%= tagsWithUrlNumbers[i]['_id'] %> (<%= tagsWithUrlNumbers[i]['numberOfUrls'] %>)</a></li>
+                <% } %>
               <% } %>
             </ul>
           </div>
           <div class="col-xs-12 col-sm-9">
+            <h2>Bookmarks</h2>
             <form class="form-horizontal" role="form" action="/" method="POST">
               <div class="form-group">
                 <label for="inputUrl" class="col-sm-2 control-label">URL</label>
