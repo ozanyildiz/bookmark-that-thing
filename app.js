@@ -39,18 +39,23 @@ if ('development' == app.get('env')) {
     app.use(express.errorHandler());
 }
 
-app.get('/', function(req, res) {
+function renderIndexPageWithTags(res, bookmarks, tagsWithUrlNumbers) {
+    res.render('index', { bookmarks: bookmarks, tagsWithUrlNumbers: tagsWithUrlNumbers });
+}
+
+function renderIndexPage(res, bookmarks, callback) { // req might be added to parameters of this function
     var query = [{ $unwind: '$tags' }, { $group: { _id: '$tags', numberOfUrls: { $sum: 1 }}}];
-    var tagsWithUrlNumbers = [];
 
     Bookmark.aggregate(query, function(err, tags) {
         if (err) { res.send(err); }
-        tagsWithUrlNumbers = tags;
+        callback(res, bookmarks, tags);
     });
+}
 
+app.get('/', function(req, res) {
     Bookmark.find(function(err, bookmarks) {
         if (err) { res.send(err); }
-        res.render('index', { bookmarks: bookmarks, tagsWithUrlNumbers: tagsWithUrlNumbers });
+        renderIndexPage(res, bookmarks, renderIndexPageWithTags);
     });
 });
 
@@ -74,7 +79,7 @@ app.post('/', function(req, res) {
 
         Bookmark.find(function(err, bookmarks) {
             if (err) { res.send(err); }
-            res.render('index', { bookmarks: bookmarks, tagsWithUrlNumbers: [] });
+            renderIndexPage(res, bookmarks, renderIndexPageWithTags);
         });
     });
 });
@@ -85,7 +90,7 @@ app.get('/:tag', function(req, res) {
 
     Bookmark.aggregate(query, function(err, taggedBookmarks) {
         if (err) { res.send(err); }
-        res.render('index', { bookmarks: taggedBookmarks, tagsWithUrlNumbers: [] });
+        renderIndexPage(res, taggedBookmarks, renderIndexPageWithTags);
     });
 });
 
