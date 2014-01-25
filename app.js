@@ -40,9 +40,18 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', function(req, res) {
+    var query = [{$unwind: '$tags'}, {$group: {_id: '$tags', numberOfUrls: {$sum:1}}}];
+    tagsWithUrlNumbers = [];
+
+    Bookmark.aggregate(query, function(err, tags) {
+        if (err) { res.send(err); }
+        tagsWithUrlNumbers = tags;
+        console.log(tagsWithUrlNumbers);
+    });
+
     Bookmark.find(function(err, bookmarks) {
         if (err) { res.send(err); }
-        res.render('index', { bookmarks: bookmarks });
+        res.render('index', { bookmarks: bookmarks, tagsWithUrlNumbers: tagsWithUrlNumbers });
     });
 });
 
