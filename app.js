@@ -4,7 +4,6 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
 
 var app = express();
 
