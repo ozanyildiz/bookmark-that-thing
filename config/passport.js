@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
 var LocalStrategy = require('passport-local').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
+var User = mongoose.model('User');
 
-module.exports = function (passport) {
+module.exports = function (passport, config) {
     
     passport.serializeUser(function (user, done) {
         done(null, user.id);
@@ -19,7 +20,7 @@ module.exports = function (passport) {
         passwordField: 'password'
     },
     function(email, password, done) {
-        User.findOne({ email: email}, function (err, user) {
+        User.findOne({ email: email }, function (err, user) {
             if (err) { return done(err); }
             if (!user) {
                 return done(null, false, { message: 'Unknown user' });

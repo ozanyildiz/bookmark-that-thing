@@ -21,7 +21,7 @@ exports.authCallback = login;
  */
 
 exports.login = function (req, res) {
-    res.render('users/login', {
+    res.render('login', {
         title: 'Login',
         message: req.flash('error')
     });
@@ -32,7 +32,7 @@ exports.login = function (req, res) {
  */
 
 exports.signup = function (req, res) {
-    res.render('users/signup', {
+    res.render('signup', {
         title: 'Sign up',
         user: new User()
     });
@@ -46,11 +46,12 @@ exports.logout = function (req, res) {
 exports.session = login;
 
 exports.create = function (req, res) {
-    var user = new User(req.body)
-    user.provider = 'local'
+    var user = new User(req.body);
+    user.provider = 'local';
     user.save(function (err) {
         if (err) {
-            return res.render('users/signup', {
+            console.log(utils.errors(err.errors));
+            return res.render('signup', {
                 error: utils.errors(err.errors),
                 user: user,
                 title: 'Sign up'
@@ -67,7 +68,7 @@ exports.create = function (req, res) {
 
 exports.show = function (req, res) {
     var user = req.profile;
-    res.render('users/show', {
+    res.render('show', {
         title: user.name,
         user: user
     });

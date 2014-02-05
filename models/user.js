@@ -6,7 +6,6 @@ var oAuthTypes = ['twitter']; // facebook is to come
 var UserSchema = new Schema({
     name: { type: String, default: '' },
     email: { type: String, default: '' },
-    username: { type: String, default: '' },
     provider: { type: String, default: '' },
     hashed_password: { type: String, default: '' },
     salt: { type: String, default: '' },
@@ -55,10 +54,6 @@ UserSchema.path('email').validate(function (email, fn) {
     } else { fn(true); }
 }, 'Email already exists');
 
-UserSchema.path('username').validate(function (username) {
-    if (this.doesNotRequireValidation()) { return true; }
-    return username.length;
-}, 'Username cannot be blank');
 
 UserSchema.path('hashed_password').validate(function (hashed_password) {
     if (this.doesNotRequireValidation()) { return true; }
