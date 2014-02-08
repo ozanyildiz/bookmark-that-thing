@@ -1,6 +1,7 @@
 
 var bookmarks = require('../controllers/bookmarks.js');
 var users = require('../controllers/users.js');
+var auth = require('./middlewares/authorization');
 
 module.exports = function(app, passport) {
 
@@ -15,9 +16,9 @@ module.exports = function(app, passport) {
             failureFlash: 'Invalid email or password.'
         }), users.session);
 
-    // app.get('/', bookmarks.show);
+    app.get('/', bookmarks.show);
 
-    // app.post('/save', bookmarks.save);
-
-    // app.get('/:tag', bookmarks.showTaggedBookmarks);
+    app.get('/bookmarks', bookmarks.show);
+    app.post('/bookmarks/create', auth.requiresLogin, bookmarks.create);
+    app.get('/bookmarks/:tag', bookmarks.showTaggedBookmarks);
 }

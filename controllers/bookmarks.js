@@ -1,21 +1,26 @@
-var Bookmark = require('../models/bookmark.js');
+var mongoose = require('mongoose');
+var Bookmark = mongoose.model('Bookmark');
 
-function renderIndexPageWithTags(res, bookmarks, tagsWithUrlNumbers) {
-    res.render('index', { bookmarks: bookmarks, tagsWithUrlNumbers: tagsWithUrlNumbers });
+function renderIndexPageWithTags(req, res, bookmarks, tagsWithUrlNumbers) {
+    res.render('bookmarks', { user: req.user, bookmarks: bookmarks, tagsWithUrlNumbers: tagsWithUrlNumbers });
 }
 
-function renderIndexPage(res, bookmarks, callback) { // req might be added to parameters of this function
-    var query = [{ $unwind: '$tags' }, { $group: { _id: '$tags', numberOfUrls: { $sum: 1 }}}];
+function renderIndexPage(req, res, bookmarks, callback) {
+    if (req.user) {
+        var query = [{$match: { user: req.user._id }}, { $unwind: '$tags' }, { $group: { _id: '$tags', numberOfUrls: { $sum: 1 }}}];
 
-    Bookmark.aggregate(query, function(err, tags) {
-        if (err) { res.send(err); }
-        callback(res, bookmarks, tags);
-    });
+        Bookmark.aggregate(query, function(err, tags) {
+            if (err) { res.send(err); }
+            callback(req, res, bookmarks, tags);
+        });
+    } else {
+        callback(req, res, [], null);
+    }
 }
 
-exports.save = function(req, res) {
+exports.create = function(req, res) {
     var tags = req.body.inputTags.split(",");
-    
+
     // Clean tag is the tag with no leading and ending spaces and also no more than one spaces!
     var cleanTags = [];
     var cleanTag = null;
@@ -26,6 +31,7 @@ exports.save = function(req, res) {
 
     Bookmark.create({
         url: req.body.inputUrl,
+        user: req.user,
         tags: cleanTags,
         notes: req.body.inputNotes
     }, function(err, bookmark) {
@@ -46,8 +52,8 @@ exports.showTaggedBookmarks = function(req, res) {
 }
 
 exports.show = function(req, res) {
-    Bookmark.find(function(err, bookmarks) {
+    Bookmark.find({ user: req.user }, function(err, bookmarks) {
         if (err) { res.send(err); }
-        renderIndexPage(res, bookmarks, renderIndexPageWithTags);
+        renderIndexPage(req, res, bookmarks, renderIndexPageWithTags);
     });
 }
