@@ -50,9 +50,8 @@ exports.create = function (req, res) {
     user.provider = 'local';
     user.save(function (err) {
         if (err) {
-            console.log(utils.errors(err.errors));
             return res.render('signup', {
-                error: utils.errors(err.errors),
+                errors: utils.errors(err.errors),
                 user: user,
                 title: 'Sign up'
             });

@@ -18,6 +18,11 @@
       </div>
       <div class="container">
         <h1><%= title %></h1>
+        <% if (typeof errors != 'undefined' && errors.length) { %>
+          <% for (var i = 0; i < errors.length; i++) { %>
+            <div class="alert alert-danger"><%= errors[i] %></div>
+          <% } %>
+        <% } %>
         <form role="form" method="POST" action="/users">
           <div class="form-group">
             <label for="inputName">Full name</label>
