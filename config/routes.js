@@ -20,5 +20,5 @@ module.exports = function(app, passport) {
 
     app.get('/bookmarks', bookmarks.show);
     app.post('/bookmarks/create', auth.requiresLogin, bookmarks.create);
-    app.get('/bookmarks/:tag', bookmarks.showTaggedBookmarks);
+    app.get('/bookmarks/:tag', auth.requiresLogin, bookmarks.showTaggedBookmarks);
 }

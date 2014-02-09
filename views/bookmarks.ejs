@@ -46,8 +46,14 @@
           <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
             <ul class="nav">
               <% if (typeof tagsWithUrlNumbers != 'undefined' && tagsWithUrlNumbers) { %>
-                <% for (var i = 0; i < tagsWithUrlNumbers.length; i++) { %>
-                  <li><a href="bookmarks/<%= tagsWithUrlNumbers[i]['_id'] %>"><%= tagsWithUrlNumbers[i]['_id'] %> (<%= tagsWithUrlNumbers[i]['numberOfUrls'] %>)</a></li>
+                <% if (!isTagPage) { %>
+                  <% for (var i = 0; i < tagsWithUrlNumbers.length; i++) { %>
+                    <li><a href="bookmarks/<%= tagsWithUrlNumbers[i]['_id'] %>"><%= tagsWithUrlNumbers[i]['_id'] %> (<%= tagsWithUrlNumbers[i]['numberOfUrls'] %>)</a></li>
+                  <% } %>
+                <% } else { %>
+                    <% for (var i = 0; i < tagsWithUrlNumbers.length; i++) { %>
+                      <li><a href="<%= tagsWithUrlNumbers[i]['_id'] %>"><%= tagsWithUrlNumbers[i]['_id'] %> (<%= tagsWithUrlNumbers[i]['numberOfUrls'] %>)</a></li>
+                  <% } %>
                 <% } %>
               <% } %>
             </ul>
@@ -87,7 +93,7 @@
                     <p class="list-group-item-heading"><a href="<%= bookmarks[i]['url'] %>"><%= bookmarks[i]['url'] %></a> - <%= bookmarks[i]['title'] %></p>
                     <p class="list-group-item-text">
                       <% if (bookmarks[i]['tags']) { %>
-                        <% if (typeof bookmarks[i]['tags'] === 'string') {%>
+                        <% if (isTagPage) { %> <!-- this control can be done once -->
                           <a href="bookmarks/<%=bookmarks[i]['tags'] %>"><%= bookmarks[i]['tags'] %></a>
                         <% } else { %>
                           <% for (var j = 0; j < bookmarks[i]['tags'].length; j++) { %>
