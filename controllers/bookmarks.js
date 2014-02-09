@@ -28,6 +28,7 @@ function findTitleAndCreateBookmark(req, res, callback) {
         if (!error && response.statusCode == 200) {
             title = body.match(/<title>(.*?)<\/title>/);
             callback(req, res, title[1]);
+            // TODO set timeout
         }
     });
 }
