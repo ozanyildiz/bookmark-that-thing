@@ -53,8 +53,8 @@
             </ul>
           </div>
           <div class="col-xs-12 col-sm-9">
-            <h2>Bookmarks</h2>
-            <form class="form-horizontal" role="form" action="/bookmarks/create" method="POST">
+            <h2>Bookmarks <button type="button" class="btn btn-primary" id="new">Add New Bookmark</button></h2>
+            <form class="form-horizontal" role="form" action="/bookmarks/create" method="POST" id="newBookmarkForm">
               <div class="form-group">
                 <label for="inputUrl" class="col-sm-2 control-label">URL</label>
                 <div class="col-sm-8">
@@ -75,7 +75,7 @@
               </div>
                <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                  <button type="submit" class="btn btn-primary">Add Bookmark</button>
+                  <button type="submit" class="btn btn-primary">Add</button>
                 </div>
               </div>
             </form>
