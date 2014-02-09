@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Bookmark = mongoose.model('Bookmark');
+var request = require('request');
 
 function renderIndexPageWithTags(req, res, bookmarks, tagsWithUrlNumbers) {
     res.render('bookmarks', { user: req.user, bookmarks: bookmarks, tagsWithUrlNumbers: tagsWithUrlNumbers });
@@ -14,7 +15,7 @@ function renderIndexPage(req, res, bookmarks, callback) {
             callback(req, res, bookmarks, tags);
         });
     } else {
-        callback(req, res, [], null);
+        callback(req, res);
     }
 }
 
@@ -28,6 +29,12 @@ exports.create = function(req, res) {
         cleanTag = tags[i].trim().replace(/ +/g, " ");
         if (cleanTag != "") { cleanTags.push(cleanTag); }
     }
+
+    request(req.body.inputUrl, function (err, res, body) {
+        if (!err && res.statusCode == 200) {
+            console.log(body);
+        }
+    });
 
     Bookmark.create({
         url: req.body.inputUrl,
@@ -43,11 +50,11 @@ exports.create = function(req, res) {
 
 exports.showTaggedBookmarks = function(req, res) {
     var tag = req.params.tag;
-    var query = [{ $unwind: "$tags" }, { $match: { tags: tag }}];
+    var query = [{$match: { user: req.user._id }}, { $unwind: "$tags" }, { $match: { tags: tag }}];
 
     Bookmark.aggregate(query, function(err, taggedBookmarks) {
         if (err) { res.send(err); }
-        renderIndexPage(res, taggedBookmarks, renderIndexPageWithTags);
+        renderIndexPage(req, res, taggedBookmarks, renderIndexPageWithTags);
     });
 }
 

@@ -45,9 +45,9 @@
         <div class="row row-offcanvas row-offcanvas-left">
           <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
             <ul class="nav">
-              <% if (tagsWithUrlNumbers) { %>
+              <% if (typeof tagsWithUrlNumbers != 'undefined' && tagsWithUrlNumbers) { %>
                 <% for (var i = 0; i < tagsWithUrlNumbers.length; i++) { %>
-                  <li><a href="/<%= tagsWithUrlNumbers[i]['_id'] %>"><%= tagsWithUrlNumbers[i]['_id'] %> (<%= tagsWithUrlNumbers[i]['numberOfUrls'] %>)</a></li>
+                  <li><a href="bookmarks/<%= tagsWithUrlNumbers[i]['_id'] %>"><%= tagsWithUrlNumbers[i]['_id'] %> (<%= tagsWithUrlNumbers[i]['numberOfUrls'] %>)</a></li>
                 <% } %>
               <% } %>
             </ul>
@@ -80,25 +80,27 @@
               </div>
             </form>
             <div class="list-group">
-              <% for (var i = 0; i < bookmarks.length; i++) { %>
-                <div class="list-group-item">
-                  <span class="pull-right"><%= bookmarks[i]['created_at'] %></span>
-                  <p class="list-group-item-heading"><a href="<%= bookmarks[i]['url'] %>"><%= bookmarks[i]['url'] %></a></p>
-                  <p class="list-group-item-text">
-                    <% if (bookmarks[i]['tags']) { %>
-                      <% if (typeof bookmarks[i]['tags'] === 'string') {%>
-                        <a href="<%= bookmarks[i]['tags'] %>"><%= bookmarks[i]['tags'] %></a>
-                      <% } else { %>
-                        <% for (var j = 0; j < bookmarks[i]['tags'].length; j++) { %>
-                          <a href="<%= bookmarks[i]['tags'][j] %>"><%= bookmarks[i]['tags'][j] %></a><% if (j != bookmarks[i]['tags'].length - 1) {%>,<% } %>
+              <% if (typeof bookmarks != 'undefined') { %>
+                <% for (var i = 0; i < bookmarks.length; i++) { %>
+                  <div class="list-group-item">
+                    <span class="pull-right"><%= bookmarks[i]['created_at'] %></span>
+                    <p class="list-group-item-heading"><a href="<%= bookmarks[i]['url'] %>"><%= bookmarks[i]['url'] %></a></p>
+                    <p class="list-group-item-text">
+                      <% if (bookmarks[i]['tags']) { %>
+                        <% if (typeof bookmarks[i]['tags'] === 'string') {%>
+                          <a href="bookmarks/<%=bookmarks[i]['tags'] %>"><%= bookmarks[i]['tags'] %></a>
+                        <% } else { %>
+                          <% for (var j = 0; j < bookmarks[i]['tags'].length; j++) { %>
+                            <a href="bookmarks/<%= bookmarks[i]['tags'][j] %>"><%= bookmarks[i]['tags'][j] %></a><% if (j != bookmarks[i]['tags'].length - 1) {%>,<% } %>
+                          <% } %>
                         <% } %>
                       <% } %>
-                    <% } %>
-                    <% if (bookmarks[i]['notes']) { %>
-                      <%= bookmarks[i]['notes'] %>
-                    <% } %>
-                  </p>
-                </div> <!-- list-group-item -->
+                      <% if (bookmarks[i]['notes']) { %>
+                        <%= bookmarks[i]['notes'] %>
+                      <% } %>
+                    </p>
+                  </div> <!-- list-group-item -->
+                <% } %>
               <% } %>
             </div> <!-- list-group -->
           </div> <!--col-xs-12 col-sm-9 -->
