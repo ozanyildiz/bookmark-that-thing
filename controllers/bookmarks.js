@@ -20,6 +20,19 @@ function renderIndexPage(req, res, bookmarks, callback) {
 }
 
 exports.create = function(req, res) {
+    findTitleAndCreateBookmark(req, res, createBookmark);
+}
+
+function findTitleAndCreateBookmark(req, res, callback) {
+    request(req.body.inputUrl, function (error, response, body) { // Be careful! There are two responses!
+        if (!error && response.statusCode == 200) {
+            title = body.match(/<title>(.*?)<\/title>/);
+            callback(req, res, title[1]);
+        }
+    });
+}
+
+function createBookmark(req, res, title) {
     var tags = req.body.inputTags.split(",");
 
     // Clean tag is the tag with no leading and ending spaces and also no more than one spaces!
@@ -30,14 +43,9 @@ exports.create = function(req, res) {
         if (cleanTag != "") { cleanTags.push(cleanTag); }
     }
 
-    request(req.body.inputUrl, function (err, res, body) {
-        if (!err && res.statusCode == 200) {
-            console.log(body);
-        }
-    });
-
     Bookmark.create({
         url: req.body.inputUrl,
+        title: title,
         user: req.user,
         tags: cleanTags,
         notes: req.body.inputNotes

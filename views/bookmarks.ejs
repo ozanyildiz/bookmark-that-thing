@@ -84,7 +84,7 @@
                 <% for (var i = 0; i < bookmarks.length; i++) { %>
                   <div class="list-group-item">
                     <span class="pull-right"><%= bookmarks[i]['created_at'] %></span>
-                    <p class="list-group-item-heading"><a href="<%= bookmarks[i]['url'] %>"><%= bookmarks[i]['url'] %></a></p>
+                    <p class="list-group-item-heading"><a href="<%= bookmarks[i]['url'] %>"><%= bookmarks[i]['url'] %></a> - <%= bookmarks[i]['title'] %></p>
                     <p class="list-group-item-text">
                       <% if (bookmarks[i]['tags']) { %>
                         <% if (typeof bookmarks[i]['tags'] === 'string') {%>

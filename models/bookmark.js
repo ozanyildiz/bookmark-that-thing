@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var bookmarkSchema = new Schema({
     url: String,
+    title: String,
     user: { type : Schema.ObjectId, ref : 'User' },
     tags: [String],
     notes: String,
