@@ -106,6 +106,10 @@
                       <% } %>
                     </p>
                   </div> <!-- list-group-item -->
+                  <form method="POST" action="/bookmarks/<%= bookmarks[i]['id'] %>"><!-- ENHANCEMENT: I can use dot notation -->
+                    <input name="_method" type="hidden" value="delete">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                  </form>
                 <% } %>
               <% } %>
             </div> <!-- list-group -->

@@ -73,3 +73,12 @@ exports.show = function(req, res) {
         renderIndexPage(req, res, bookmarks, false, renderIndexPageWithTags);
     });
 }
+
+exports.destroy = function(req, res) {
+    var bookmarkId = req.params.id;
+
+    Bookmark.findByIdAndRemove(bookmarkId, function(err) {
+        if (err) { res.send(err); }
+        res.redirect('/');
+    });
+}
