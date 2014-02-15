@@ -82,6 +82,7 @@
                <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                   <button type="submit" class="btn btn-primary">Add</button>
+                  <button type="button" id="newCancel" class="btn btn-default">Cancel</button>
                 </div>
               </div>
             </form>
@@ -108,7 +109,16 @@
                   </div> <!-- list-group-item -->
                   <form method="POST" action="/bookmarks/<%= bookmarks[i]['id'] %>"><!-- ENHANCEMENT: I can use dot notation -->
                     <input name="_method" type="hidden" value="delete">
+                    <button type="button" class="btn btn-primary">Edit</button>
                     <button type="submit" class="btn btn-danger">Delete</button>
+                  </form>
+                  <form method="POST" action="/bookmarks/<%= bookmarks[i]['id'] %>">
+                    <input name="_method" type="hidden" value="put">
+                    <input type="text" class="form-control" name="inputTitle" value="<%= bookmarks[i]['title'] %>">
+                    <input type="text" class="form-control" name="inputTags" value="<%= bookmarks[i]['tags'] %>">
+                    <textarea class="form-control" name="inputNotes" rows="3" value="bookmarks[i]['notes']"><%= bookmarks[i]['notes'] %></textarea>
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                    <button type="button" class="btn btn-default">Cancel</button>
                   </form>
                 <% } %>
               <% } %>

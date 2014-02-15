@@ -82,3 +82,27 @@ exports.destroy = function(req, res) {
         res.redirect('/');
     });
 }
+
+exports.update = function(req, res) {
+    var bookmarkId = req.params.id;
+
+    var tags = req.body.inputTags.split(",");
+
+    // Clean tag is the tag with no leading and ending spaces and also no more than one spaces!
+    var cleanTags = [];
+    var cleanTag = null;
+    for (var i = 0; i < tags.length; i++) {
+        cleanTag = tags[i].trim().replace(/ +/g, " ");
+        if (cleanTag != "") { cleanTags.push(cleanTag); }
+    }
+
+    Bookmark.findByIdAndUpdate(bookmarkId, {
+        title: req.body.inputTitle,
+        tags: cleanTags,
+        notes: req.body.inputNotes
+    }, function(err) {
+        if (err) { res.send(err); }
+        res.redirect('/');
+    });
+
+}
