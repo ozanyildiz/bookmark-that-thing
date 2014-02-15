@@ -16,6 +16,16 @@ module.exports = function(app, passport) {
             failureFlash: 'Invalid email or password.'
         }), users.session);
 
+    app.get('/auth/twitter',
+    passport.authenticate('twitter', {
+        failureRedirect: '/login'
+    }), users.signin);
+
+    app.get('/auth/twitter/callback',
+    passport.authenticate('twitter', {
+        failureRedirect: '/login'
+    }), users.authCallback)
+
     app.get('/', bookmarks.show);
 
     app.get('/bookmarks', bookmarks.show);

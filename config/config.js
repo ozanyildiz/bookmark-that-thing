@@ -1,8 +1,8 @@
 
 module.exports = {
     twitter: {
-        clientID: "CONSUMER_KEY",
-        clientSecret: "CONSUMER_SECRET",
+        clientID: process.env.TWITTER_CLIENT_ID,
+        clientSecret: process.env.TWITTER_CLIENT_SECRET,
         callbackURL: "http://localhost:3000/auth/twitter/callback"
     }
 }
