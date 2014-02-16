@@ -24,6 +24,28 @@ $(document).ready(function() {
     var hostname = getLocation(url).hostname.replace(/^www./, '');
     $(this).after(" - " + hostname);
   });
+
+  $('.editBookmarkForm').hide();
+
+  // THE DOM ANNIHILATION
+  $('.edit').click(function () {
+    $('.editBookmarkForm').hide(); // close other forms for editing bookmark
+
+    $('.list-group-item').show(); // if there are open forms, their list-item will be hidden. So, show them.
+    $('.buttons').show(); // show the buttons as well.
+
+    $(this).parent().hide();
+    $(this).parents(".bookmark-container").find('.list-group-item').hide(); // REALLY?
+    $(this).parents(".bookmark-container").find('.editBookmarkForm').show(); // REALLY REALLY?
+  });
+
+  $('.editCancel').click(function () {
+    $(this).parent().hide();
+    $(this).parents(".bookmark-container").find('.buttons').show();
+    $(this).parents(".bookmark-container").find('.list-group-item').show();
+    $(this).parents(".bookmark-container").find('.editBookmarkForm').hide();
+  });
+
 /*
   $('.edit').click(function() {
     $(this).hide();
