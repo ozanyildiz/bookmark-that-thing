@@ -2,6 +2,20 @@ var mongoose = require('mongoose');
 var Bookmark = mongoose.model('Bookmark');
 var request = require('request');
 
+function getCleanTags(inputTags) {
+    var tags = inputTags.split(",");
+
+    // Clean tag is the tag with no leading and ending spaces and also no more than one spaces!
+    var cleanTags = [];
+    var cleanTag = null;
+    for (var i = 0; i < tags.length; i++) {
+        cleanTag = tags[i].trim().replace(/ +/g, " ");
+        if (cleanTag != "") { cleanTags.push(cleanTag); }
+    }
+
+    return cleanTags;
+}
+
 function renderIndexPageWithTags(req, res, bookmarks, isTagPage, tagsWithUrlNumbers) {
     res.render('bookmarks', { user: req.user, bookmarks: bookmarks, tagsWithUrlNumbers: tagsWithUrlNumbers, isTagPage: isTagPage });
 }
@@ -34,15 +48,7 @@ function findTitleAndCreateBookmark(req, res, callback) {
 }
 
 function createBookmark(req, res, title) {
-    var tags = req.body.inputTags.split(",");
-
-    // Clean tag is the tag with no leading and ending spaces and also no more than one spaces!
-    var cleanTags = [];
-    var cleanTag = null;
-    for (var i = 0; i < tags.length; i++) {
-        cleanTag = tags[i].trim().replace(/ +/g, " ");
-        if (cleanTag != "") { cleanTags.push(cleanTag); }
-    }
+    var cleanTags = getCleanTags(req.body.inputTags);
 
     Bookmark.create({
         url: req.body.inputUrl,
@@ -86,15 +92,7 @@ exports.destroy = function(req, res) {
 exports.update = function(req, res) {
     var bookmarkId = req.params.id;
 
-    var tags = req.body.inputTags.split(",");
-
-    // Clean tag is the tag with no leading and ending spaces and also no more than one spaces!
-    var cleanTags = [];
-    var cleanTag = null;
-    for (var i = 0; i < tags.length; i++) {
-        cleanTag = tags[i].trim().replace(/ +/g, " ");
-        if (cleanTag != "") { cleanTags.push(cleanTag); }
-    }
+    var cleanTags = getCleanTags(req.body.inputTags);
 
     Bookmark.findByIdAndUpdate(bookmarkId, {
         title: req.body.inputTitle,
