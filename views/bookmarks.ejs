@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
     <link rel='stylesheet' href='/stylesheets/style.css'/>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery-dateFormat.min.js"></script>
     <script type="text/javascript" src="/javascripts/main.js"></script>
   </head>
   <body>
@@ -91,7 +92,7 @@
                 <% for (var i = 0; i < bookmarks.length; i++) { %>
                   <div class="bookmark-container">
                   <div class="list-group-item">
-                    <span class="pull-right"><%= bookmarks[i]['created_at'] %></span>
+                    <span class="pull-right date"><%= bookmarks[i]['created_at'] %></span>
                     <p class="list-group-item-heading"><a href="<%= bookmarks[i]['url'] %>" class="title"><%= bookmarks[i]['title'] %></a></p>
                     <p class="list-group-item-text">
                       <% if (bookmarks[i]['tags']) { %>

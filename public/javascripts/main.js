@@ -46,6 +46,10 @@ $(document).ready(function() {
     $(this).parents(".bookmark-container").find('.editBookmarkForm').hide();
   });
 
+  $.each($(".date"), function (i, val) {
+    $(this).text($.format.date($(this).text(), "MMMM d, yyyy"));
+  });
+
 /*
   $('.edit').click(function() {
     $(this).hide();
