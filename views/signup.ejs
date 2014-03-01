@@ -24,17 +24,18 @@
           <% } %>
         <% } %>
         <form role="form" method="POST" action="/users">
+          <input type="hidden" name="_csrf" value="<%=token%>" />
           <div class="form-group">
             <label for="inputName">Full name</label>
-            <input type="name" class="form-control" name="name" placeholder="Enter full name">
+            <input type="name" class="form-control" name="name" placeholder="Enter full name" required>
           </div>
           <div class="form-group">
             <label for="inputEmail">Email address</label>
-            <input type="email" class="form-control" name="email" placeholder="Enter email">
+            <input type="email" class="form-control" name="email" placeholder="Enter email" required>
           </div>
           <div class="form-group">
             <label for="inputPassword">Password</label>
-            <input type="password" class="form-control" name="password" placeholder="Password">
+            <input type="password" class="form-control" name="password" placeholder="Password" required>
           </div>
           <button type="submit" class="btn btn-default">Sign up</button>
         </form>
