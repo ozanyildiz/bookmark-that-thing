@@ -43,6 +43,9 @@
           <p><a href="/signup" class="btn btn-primary btn-lg" role="button">Sign up! &raquo;</a></p>
         </div> 
         <% } else { %>
+        <% if (typeof message != 'undefined' && message != "") { %>
+          <div class="alert alert-success"><%= message %></div>
+        <% } %>
         <div class="row row-offcanvas row-offcanvas-left">
           <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
             <ul class="nav">
@@ -62,6 +65,7 @@
           <div class="col-xs-12 col-sm-9">
             <h2>Bookmarks <button type="button" class="btn btn-primary" id="new">Add New Bookmark</button></h2>
             <form class="form-horizontal" role="form" action="/bookmarks/create" method="POST" id="newBookmarkForm">
+              <input type="hidden" name="_csrf" value="<%=token%>" />
               <div class="form-group">
                 <label for="inputUrl" class="col-sm-2 control-label">URL</label>
                 <div class="col-sm-8">
@@ -110,12 +114,14 @@
                     </p>
                   </div> <!-- list-group-item -->
                   <form method="POST" action="/bookmarks/<%= bookmarks[i]['id'] %>" class="buttons"><!-- ENHANCEMENT: I can use dot notation -->
-                    <input name="_method" type="hidden" value="delete">
+                    <input type="hidden" name="_csrf" value="<%=token%>" />
+                    <input type="hidden" name="_method" value="delete">
                     <button type="button" class="btn btn-primary edit">Edit</button>
                     <button type="submit" class="btn btn-danger">Delete</button>
                   </form>
                   <form method="POST" action="/bookmarks/<%= bookmarks[i]['id'] %>" class="editBookmarkForm">
-                    <input name="_method" type="hidden" value="put">
+                    <input type="hidden" name="_csrf" value="<%=token%>" />
+                    <input type="hidden" name="_method" value="put">
                     <input type="text" class="form-control" name="inputTitle" value="<%= bookmarks[i]['title'] %>">
                     <input type="text" class="form-control" name="inputTags" value="<%= bookmarks[i]['tags'] %>">
                     <textarea class="form-control" name="inputNotes" rows="3" value="bookmarks[i]['notes']"><%= bookmarks[i]['notes'] %></textarea>

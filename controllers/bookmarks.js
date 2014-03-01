@@ -17,7 +17,7 @@ function getCleanTags(inputTags) {
 }
 
 function renderIndexPageWithTags(req, res, bookmarks, isTagPage, tagsWithUrlNumbers) {
-    res.render('bookmarks', { user: req.user, bookmarks: bookmarks, tagsWithUrlNumbers: tagsWithUrlNumbers, isTagPage: isTagPage });
+    res.render('bookmarks', { user: req.user, bookmarks: bookmarks, tagsWithUrlNumbers: tagsWithUrlNumbers, isTagPage: isTagPage, message: req.flash('success') });
 }
 
 function renderIndexPage(req, res, bookmarks, isTagPage, callback) {
@@ -58,7 +58,7 @@ function createBookmark(req, res, title) {
         notes: req.body.inputNotes
     }, function(err, bookmark) {
         if (err) { res.send(err); }
-
+        req.flash('success', 'Bookmark has been sucessfully created!');
         res.redirect('/');
     });
 }
@@ -85,6 +85,7 @@ exports.destroy = function(req, res) {
 
     Bookmark.findByIdAndRemove(bookmarkId, function(err) {
         if (err) { res.send(err); }
+        req.flash('success', 'Bookmark has been sucessfully removed!');
         res.redirect('/');
     });
 }
@@ -100,6 +101,7 @@ exports.update = function(req, res) {
         notes: req.body.inputNotes
     }, function(err) {
         if (err) { res.send(err); }
+        req.flash('success', 'Bookmark has been sucessfully edited!');
         res.redirect('/');
     });
 
