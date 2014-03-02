@@ -64,7 +64,7 @@ function createBookmark(req, res, title) {
 
 exports.showTaggedBookmarks = function(req, res) {
     var tag = req.params.tag;
-    var query = [{$match: { user: req.user._id }}, { $unwind: "$tags" }, { $match: { tags: tag }}];
+    var query = [{$match: { user: req.user._id }}, { $unwind: "$tags" }, { $match: { tags: tag }}, { $sort: { created_at: -1 }}];
 
     Bookmark.aggregate(query, function(err, taggedBookmarks) {
         if (err) { res.send(err); }
