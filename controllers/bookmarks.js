@@ -22,8 +22,7 @@ function renderIndexPageWithTags(req, res, bookmarks, isTagPage, tagsWithUrlNumb
 
 function renderIndexPage(req, res, bookmarks, isTagPage, callback) {
     if (req.user) {
-        var query = [{$match: { user: req.user._id }}, { $unwind: '$tags' }, { $group: { _id: '$tags', numberOfUrls: { $sum: 1 }}}];
-
+        var query = [{ $match: { user: req.user._id }}, { $unwind: '$tags' }, { $group: { _id: '$tags', numberOfUrls: { $sum: 1 }}}];
         Bookmark.aggregate(query, function(err, tags) {
             if (err) { res.send(err); }
             callback(req, res, bookmarks, isTagPage, tags);
@@ -74,7 +73,7 @@ exports.showTaggedBookmarks = function(req, res) {
 }
 
 exports.show = function(req, res) {
-    Bookmark.find({ user: req.user }, function(err, bookmarks) {
+    Bookmark.find({ user: req.user }, null, { sort: { created_at: -1 }}, function(err, bookmarks) {
         if (err) { res.send(err); }
         renderIndexPage(req, res, bookmarks, false, renderIndexPageWithTags);
     });
