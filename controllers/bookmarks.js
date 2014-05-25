@@ -40,8 +40,12 @@ function findTitleAndCreateBookmark(req, res, callback) {
     request(req.body.inputUrl, function (error, response, body) { // Be careful! There are two responses!
         if (!error && response.statusCode == 200) {
             title = body.match(/<title>(.*?)<\/title>/);
-            callback(req, res, title[1]);
-            // TODO set timeout
+            if (title != null && title[1] != null) {
+                callback(req, res, title[1]);
+                // TODO set timeout
+            } else {
+                callback(req, res, req.body.inputUrl);
+            }
         }
     });
 }
