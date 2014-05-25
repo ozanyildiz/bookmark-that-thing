@@ -7,4 +7,4 @@ Environment Variables
 ---------------------
 
 Before starting the server, make sure that you assign those environment variables properly:
-`TWITTER_CLIENT_SECRET`, `TWITTER_CLIENT_ID`
+`TWITTER_CLIENT_SECRET`, `TWITTER_CLIENT_ID`, `MONGOHQ_URL`

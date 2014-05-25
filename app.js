@@ -10,7 +10,7 @@ var config = require('./config/config');
 
 var app = express();
 
-mongoose.connect(process.env.MONGOHQ_URL);
+mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://127.0.0.1/bookmark-store');
 
 require('./models/user');
 require('./models/bookmark');
