@@ -20,7 +20,7 @@
             </button>
             <a class="navbar-brand" href="/">Bookmark That Thing</a>
           </div>
-          <ul class="nav navbar-nav">
+          <ul class="nav navbar-nav hidden-xs">
             <% if (user) { %>
               <li><a href="/logout">Logout</a></li>
             <% } else { %>
@@ -29,7 +29,7 @@
             <% } %>
           </ul>
           <% if (user) { %>
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right hidden-xs">
               <li><a href="#"><%= user.email %></a></li>
             </ul>
           <% } %>
